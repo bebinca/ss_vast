@@ -6,7 +6,7 @@ from datasketch import WeightedMinHashGenerator
 import time
 # constants
 alpha = 1
-lambda_ = 1
+lambda_ = 10
 th = 0.9
 decrease_step = 0.05
 wmg = WeightedMinHashGenerator(34)
@@ -375,7 +375,7 @@ print(max_len)
 Q = []
 C = []
 # for i in range(len(sequences)):
-for i in range(1000):
+for i in range(100):
     temp = construct(sequences[i], id=i)
     C.append(temp)
 s = time.time()
