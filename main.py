@@ -1,9 +1,17 @@
 import csv
 from copy import deepcopy
 import heapq
-
+import config
+from datasketch import WeightedMinHashGenerator
+import time
+# constants
 alpha = 1
 lambda_ = 1
+th = 0.9
+decrease_step = 0.05
+wmg = WeightedMinHashGenerator(34)
+
+# read the file
 result = None
 with open('Events08Only.csv', 'r', encoding='utf-8') as f:
     reader = csv.reader(f)
@@ -31,10 +39,9 @@ for i in result:
 if len(temp_sequence) > max_len:
     max_len = len(temp_sequence)
 sequences.append(temp_sequence)
-# for row in sequences:
-#     print(row)
 
 
+# calculate edits from sequence(list of string) to list of Events
 def edits(s, events):
     len1 = len(s)
     len2 = len(events)
@@ -57,6 +64,7 @@ def edits(s, events):
     return len1 + len2 - 2 * max_len
 
 
+# calculate edits from sequence to pattern and update the event frequency and insertions for pattern
 def edit_insert(s, pattern):
     events = pattern.events
     len1 = len(s)
@@ -80,9 +88,6 @@ def edit_insert(s, pattern):
     edits = len1 + len2 - 2 * max_len
     i = len1 - 1
     j = len2 - 1
-    # print("start", len1, len2)
-    # print(s)
-    # print(events)
     while True:
         if s[i] == events[j].name:
             pattern.events[j].freq = pattern.events[j].freq + 1
@@ -105,7 +110,7 @@ def edit_insert(s, pattern):
             i = i - 1
 
 
-# event has name, freq, pos1, pos2
+# calculate LCS for list of events and return the list
 def LCS(p1, p2):  # longest common substring, used in merge
     len1 = len(p1)
     len2 = len(p2)
@@ -169,54 +174,14 @@ def LCS(p1, p2):  # longest common substring, used in merge
         if has1[j] == 0:
             sub2.append(p2[j])
     return max_len, res, res1, sub1, sub2
-    # res with pos1, res1 with pos2,
-
-
-# event has name, freq, pos1, pos2
-def _CS_(p1, p2):  # longest common substring, used in merge
-    len1 = len(p1)
-    len2 = len(p2)
-    max_len = 0
-    dp = [[0 for col in range(len2)] for row in range(len1)]  # len1 * len2
-    for i in range(len1):
-        for j in range(len2):
-            if p1[i] == p2[j]:
-                if i == 0 or j == 0:
-                    dp[i][j] = 1
-                else:
-                    dp[i][j] = dp[i - 1][j - 1] + 1
-            else:
-                if i == 0 or j == 0:
-                    dp[i][j] = 0
-                else:
-                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
-            if dp[i][j] > max_len:
-                max_len = dp[i][j]
-    i = len1 - 1
-    j = len2 - 1
-    res = []
-    while True:
-        if p1[i] == p2[j]:
-            res.insert(0, p1[i])
-            if i == 0 or j == 0:
-                break
-            i = i - 1
-            j = j - 1
-        else:
-            if i == 0 or j == 0:
-                break
-            if dp[i - 1][j] > dp[i][j - 1]:
-                i = i - 1
-            else:
-                j = j - 1
-    return max_len, res
+    # res with pos1, res1 with pos2
 
 
 class Event:
     def __init__(self, name='', freq=0, pos=-1):
-        self.name = name
-        self.freq = freq
-        self.pos = pos
+        self.name = name  # name like 'appInit'
+        self.freq = freq  # number of sequence mapped
+        self.pos = pos    # position in pattern
 
     def __str__(self):
         return "{}, {}, {}".format(self.name, self.freq, self.pos)
@@ -225,28 +190,16 @@ class Event:
         return self.freq < other.freq
 
 
-class MergingEvent:
-    def __init__(self, event1, event2):
-        self.name = event1.name
-        self.freq = event1.freq + event2.freq
-        self.pos1 = event1.pos
-        self.pos2 = event2.pos
-
-    def __str__(self):
-        return "{}, {}, {}, {}".format(self.name, self.freq, self.pos1, self.pos2)
-
-    def __lt__(self, other):
-        return self.freq < other.freq
-
-
 class Pattern:
     def __init__(self, events=[], seqs=[], insert=[]):
-        self.events = events
-        self.seqs = seqs
-        self.insert = insert
-        self.edit = -1
+        self.events = events        # list of Events
+        self.seqs = seqs            # list of mapped sequence
+        self.insert = insert        # list of insertions, every position is a list
+        self.edit = -1              # the number of edits, need to be calculated by self.edits()
+        self.hash_events = None     # list of Events in number
+        self.wm = None              # hash
 
-    def __str__(self):
+    def __str__(self):              # pattern print
         ans = 'events:\n'
         for event in self.events:
             ans = ans + event.__str__() + '\n'
@@ -266,7 +219,7 @@ class Pattern:
     def __lt__(self, other):
         return len(self.seqs) < len(other.seqs)
 
-    def edits(self):
+    def edits(self):  # calculate the edits number from sequences mapped to events, update self.edit
         res = 0
         for s in self.seqs:
             temp = edits(sequences[s], self.events)
@@ -274,14 +227,14 @@ class Pattern:
         self.edit = res
         return res
 
-    def edits_new(self, events):
+    def edits_new(self, events):  # calculate the number of edits from sequences to this events
         res = 0
         for s in self.seqs:
             temp = edits(sequences[s], events)
             res = res + temp
         return res
 
-    def insert_action(self, name, pos):
+    def insert_action(self, name, pos):  # insert event name on pos
         length = len(self.insert[pos])
         for i in range(length):
             if self.insert[pos][i].name == name:
@@ -291,13 +244,21 @@ class Pattern:
         self.insert[pos].append(e)
         return
 
-    def cal_insert(self):
+    def cal_insert(self):  # calculate insert from sequences to events
         for s in self.seqs:
             edit_insert(sequences[s], self)
 
-    def insert_reorder(self):
+    def insert_reorder(self):  # insert reorder by frequency
         for ins_list in self.insert:
             list.sort(ins_list, reverse=True)
+
+    def cal_hash_events(self):  # calculate hash_events and wm
+        self.hash_events = []
+        for e in self.events:
+            self.hash_events.append(config.event_dict[e.name])
+        self.hash_events = self.hash_events + [0 for temp in range(206-len(self.hash_events))]
+        wm = wmg.minhash(self.hash_events)
+        self.wm = wm
 
 
 def construct(strings, id=0):  # get pattern from sequence id
@@ -314,7 +275,7 @@ def construct(strings, id=0):  # get pattern from sequence id
     return res
 
 
-def construct_from(events, seqs):
+def construct_from(events, seqs):  # get pattern from events and seqs
     res = Pattern()
     res.events = deepcopy(events)
     res.seqs = deepcopy(seqs)
@@ -323,7 +284,7 @@ def construct_from(events, seqs):
     return res
 
 
-def find_pos(e, events):
+def find_pos(e, events):  # find insert pos of e in events
     pos = e.pos
     i = 0
     for temp in events:
@@ -336,7 +297,7 @@ def find_pos(e, events):
     return i
 
 
-def union(m1, m2, p1, p2):
+def union(m1, m2, p1, p2):  # union to get pattern
     events = []
     i = 0
     for item in m1:
@@ -358,12 +319,12 @@ def merge(p1, p2):  # merge Pattern1 and Pattern2
     list.sort(e1, reverse=True)
     list.sort(e2, reverse=True)
     delta_const = len(p1) + len(p2) + alpha * (p1.edits() + p2.edits()) + lambda_
-    #print(len(p1), len(p2), p1.edit, p2.edit, delta_const)
+    # print(len(p1), len(p2), p1.edit, p2.edit, delta_const)
     # delta need - length and - newEdit
     edit1 = p1.edits_new(m1)
     edit2 = p2.edits_new(m2)
     delta = delta_const - length - alpha * (edit1 + edit2)
-    #print(length, edit1, edit2, delta)
+    # print(length, edit1, edit2, delta)
     temp_p1 = deepcopy(m1)
     temp_p2 = deepcopy(m2)
     while True:
@@ -389,7 +350,7 @@ def merge(p1, p2):  # merge Pattern1 and Pattern2
         edit1 = p1.edits_new(temp_p1)
         edit2 = p2.edits_new(temp_p2)
         temp_delta = delta_const - len(temp_p1) - alpha * (edit1 + edit2)
-        #print(len(temp_p1), edit1, edit2, temp_delta)
+        # print(len(temp_p1), edit1, edit2, temp_delta)
         if temp_delta < 0 or temp_delta < delta:
             break
         else:
@@ -400,21 +361,34 @@ def merge(p1, p2):  # merge Pattern1 and Pattern2
     return delta, res
 
 
+def cal_minhash(p1, p2): # calculate hash between p1 and p2
+    if p1.hash_events is None:
+        p1.cal_hash_events()
+    if p2.hash_events is None:
+        p2.cal_hash_events()
+    return p1.wm.jaccard(p2.wm)
+
+
+# begin process
 print(len(sequences))
 print(max_len)
-print(sequences[0])
-print(sequences[1])
 Q = []
 C = []
 # for i in range(len(sequences)):
-for i in range(100):
+for i in range(1000):
     temp = construct(sequences[i], id=i)
     C.append(temp)
+s = time.time()
 for i in range(len(C)):
     if i % 10 == 0:
         print("begin ", i)
     j = i + 1
     while j < len(C):
+        ###
+        # if cal_minhash(C[i], C[j]) < th:
+        #     j = j + 1
+        #     continue
+        ###
         [delta, temp_pattern] = merge(C[i], C[j])
         if delta > 0:
             heapq.heappush(Q, (-delta, temp_pattern, i, j))
@@ -426,15 +400,19 @@ while len(Q) > 0:
     Q_new = [item for item in Q if item[2] != i and item[2] != j and item[3] != i and item[3] != j]
     Q = Q_new
     for x in range(len(C)):
+        # if C[x] is not None and cal_minhash(C[x], pattern) >= th:
         if C[x] is not None:
             delta, new_pattern = merge(C[x], pattern)
             if delta > 0:
                 heapq.heappush(Q, (-delta, new_pattern, len(C), x))
+        th = th - decrease_step
     C.append(pattern)
 # test
 res = [item for item in C if item is not None]
+end = time.time()
 print("--------------------")
 for item in res:
     print(item)
     print("--------------------")
 print(len(res))
+print(end - s)
