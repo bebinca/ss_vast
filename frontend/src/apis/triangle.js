@@ -1,15 +1,12 @@
-// need props: name, size
-// TODO: modify calHeight function
-// TODO: position
 import React, { Component } from "react";
 import store from "../store/store";
-class Rectangle extends Component {
+class Triangle extends Component {
   //   componentDidMount() {
-  //     store.registerComponent("Rectangle", this);
+  //     store.registerComponent("Triangle", this);
   //   }
 
   //   componentWillUnmount() {
-  //     store.unregisterComponent("Rectangle", this);
+  //     store.unregisterComponent("Triangle", this);
   //   }
   calHeight(size) {
     return size;
@@ -35,4 +32,4 @@ class Rectangle extends Component {
   }
 }
 
-export default Rectangle;
+export default Triangle;
