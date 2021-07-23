@@ -4,7 +4,6 @@ class Triangle extends Component {
   //   componentDidMount() {
   //     store.registerComponent("Triangle", this);
   //   }
-
   //   componentWillUnmount() {
   //     store.unregisterComponent("Triangle", this);
   //   }
@@ -14,19 +13,39 @@ class Triangle extends Component {
   render() {
     const { classes } = this.props;
     console.log(this.props);
+    let height = this.calHeight(this.props.size);
+    let smallHeight = height - 4;
     return (
       <div
         style={{
-          height: this.calHeight(this.props.size),
-          width: 43,
+          width: 2 * height,
+          height: height,
           position: "relative",
-          border: "3px solid " + store.getData.Color(this.props.name),
-          borderTop: "10px solid " + store.getData.Color(this.props.name),
-          borderRadius: "2px",
           overflow: "hidden",
         }}
       >
-        <div>{this.props.name}</div>
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: height + "px solid transparent",
+            borderRight: height + "px solid transparent",
+            borderTop: height + "px solid grey",
+            position: "relative",
+          }}
+        ></div>
+        <div
+          style={{
+            width: 0,
+            height: 0,
+            borderLeft: smallHeight + "px solid transparent",
+            borderRight: smallHeight + "px solid transparent",
+            borderTop: smallHeight + "px solid white",
+            position: "absolute",
+            top: "2px",
+            left: "4px",
+          }}
+        ></div>
       </div>
     );
   }
