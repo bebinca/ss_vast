@@ -21,7 +21,6 @@ class Store {
       return this.count;
     },
     Color: (name) => {
-      console.log(this.eventColor);
       if (this.eventColor[name]) return this.eventColor[name];
       else return "rgb(204,204,204)";
     },

@@ -16,20 +16,33 @@ class Rectangle extends Component {
   }
   render() {
     const { classes } = this.props;
-    console.log(this.props);
+    let name = this.props.name;
+    let size = this.calHeight(this.props.size);
+    let color = store.getData.Color(name);
+    let border = size === 0 ? "0px" : "2px solid " + color;
+    let width = size === 0 ? 46 : 42;
     return (
       <div
         style={{
-          height: this.calHeight(this.props.size),
-          width: 43,
-          position: "relative",
-          border: "3px solid " + store.getData.Color(this.props.name),
-          borderTop: "10px solid " + store.getData.Color(this.props.name),
-          borderRadius: "2px",
-          overflow: "hidden",
+          display: "inline-block",
+          paddingRight: 4,
+          verticalAlign: "top",
         }}
       >
-        <div>{this.props.name}</div>
+        <div
+          style={{
+            height: size,
+            width: width,
+            position: "relative",
+            border: border,
+            borderTop: "10px solid " + color,
+            borderRadius: "1px",
+            overflow: "hidden",
+            backgroundColor: "#fff",
+          }}
+        >
+          <div>{name}</div>
+        </div>
       </div>
     );
   }
