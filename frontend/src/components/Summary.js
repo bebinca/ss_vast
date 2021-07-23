@@ -1,7 +1,7 @@
 import store from "../store/store";
 import React, { Component } from "react";
-import Rectangle from "../apis/rectangle";
-import Triangle from "../apis/triangle";
+import Rectangle from "../summary/rectangle";
+import Triangle from "../summary/triangle";
 class Summary extends Component {
   componentDidMount() {
     store.registerComponent("Summary", this);
@@ -13,7 +13,7 @@ class Summary extends Component {
   render() {
     return (
       <div>
-        <Rectangle name="appInit" size={40} />
+        <Rectangle name="resize" size={40} />
         <Triangle size={30} />
       </div>
     );
