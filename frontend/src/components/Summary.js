@@ -1,6 +1,7 @@
 import store from "../store/store";
 import React, { Component } from "react";
 import List from "../summary/list";
+import Title from "./title";
 class Summary extends Component {
   componentDidMount() {
     store.registerComponent("Summary", this);
@@ -11,8 +12,12 @@ class Summary extends Component {
   }
   render() {
     return (
-      <div style={{ overflow: "hidden" }}>
-        <div>Sequence Clusters</div>
+      <div
+        style={{
+          overflow: "hidden",
+        }}
+      >
+        <Title name="Sequence Clusters" />
         <List />
       </div>
     );

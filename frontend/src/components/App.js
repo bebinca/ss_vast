@@ -36,22 +36,22 @@ const styles = {
     position: "absolute",
     top: 40,
     bottom: 40,
-    left: 5,
+    left: 8,
     width: 450,
   },
   summary: {
     position: "relative",
     top: 40,
     bottom: 40,
-    left: 465,
-    width: 550,
+    left: 468,
+    width: 650,
   },
   detail: {
     position: "absolute",
     top: 40,
     bottom: 40,
-    left: 1025,
-    right: 5,
+    left: 1128,
+    right: 8,
   },
 };
 

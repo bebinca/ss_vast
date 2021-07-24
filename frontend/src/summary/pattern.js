@@ -1,37 +1,41 @@
 import React, { Component } from "react";
-import store from "../store/store";
 import Rectangle from "./rectangle";
 import Triangle from "./triangle";
 class Pattern extends Component {
-  //   componentDidMount() {
-  //     store.registerComponent("Pattern", this);
-  //   }
-
-  //   componentWillUnmount() {
-  //     store.unregisterComponent("Pattern", this);
-  //   }
   render() {
     const { data } = this.props;
     console.log(data);
-    const rectangle = data.events.map((event) => (
-      <Rectangle name={event.name} size={event.freq} />
+    const rectangle = data.events.map((event, index) => (
+      <Rectangle name={event.name} size={event.freq} pos={index} />
     ));
     const triangle = data.insert.map((insert, index) => (
-      <Triangle size={insert.length} pos={index} />
+      <Triangle size={insert.size} pos={index} item={insert.data} />
     ));
-    const backgroundColor = this.props.kind ? "#efefef" : "#fff";
     return (
-      <div style={{ backgroundColor: backgroundColor }}>
+      <div
+        style={{
+          display: "inline-block",
+          position: "relative",
+          margin: 0,
+        }}
+      >
         <div
           style={{
             position: "relative",
-            left: 20,
-            bottom: 3,
-            overflow: "hidden",
+            display: "table",
+            whiteSpace: "nowrap",
           }}
         >
-          <div style={{ position: "relative" }}>{triangle}</div>
-          <div style={{ position: "relative" }}>{rectangle}</div>
+          {triangle}
+        </div>
+        <div
+          style={{
+            position: "relative",
+            display: "table",
+            whiteSpace: "nowrap",
+          }}
+        >
+          {rectangle}
         </div>
       </div>
     );

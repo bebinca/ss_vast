@@ -1,5 +1,6 @@
 import store from "../store/store";
 import React, { Component } from "react";
+import Title from "./title";
 class Filter extends Component {
   componentDidMount() {
     store.registerComponent("Filter", this);
@@ -9,7 +10,11 @@ class Filter extends Component {
     store.unregisterComponent("Filter", this);
   }
   render() {
-    return <div></div>;
+    return (
+      <div>
+        <Title name="Events Filter" />
+      </div>
+    );
   }
 }
 

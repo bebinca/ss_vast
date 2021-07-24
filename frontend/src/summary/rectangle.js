@@ -4,18 +4,10 @@
 import React, { Component } from "react";
 import store from "../store/store";
 class Rectangle extends Component {
-  //   componentDidMount() {
-  //     store.registerComponent("Rectangle", this);
-  //   }
-
-  //   componentWillUnmount() {
-  //     store.unregisterComponent("Rectangle", this);
-  //   }
   calHeight(size) {
     return size;
   }
   render() {
-    const { classes } = this.props;
     let name = this.props.name;
     let size = this.calHeight(this.props.size);
     let color = store.getData.Color(name);
@@ -34,6 +26,7 @@ class Rectangle extends Component {
             height: size,
             width: width,
             position: "relative",
+            left: 0,
             border: border,
             borderTop: "10px solid " + color,
             borderRadius: "1px",

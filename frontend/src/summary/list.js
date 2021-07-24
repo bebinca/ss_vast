@@ -1,6 +1,7 @@
 import store from "../store/store";
 import React, { Component } from "react";
 import Pattern from "./pattern";
+import ListItem from "./listItem";
 class List extends Component {
   componentDidMount() {
     store.registerComponent("List", this);
@@ -21,43 +22,41 @@ class List extends Component {
         14, 16, 22, 25, 26, 29, 39, 46, 52, 55, 57, 63, 64, 66, 73, 74, 83,
       ],
       insert: [
-        [
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-        ],
-        [],
-        [
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-        ],
-        [
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-        ],
-        [
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-          { name: "appInit", freq: 10 },
-        ],
+        {
+          size: 10,
+          data: [
+            { name: "appInit", freq: 10 },
+            { name: "appInit", freq: 10 },
+          ],
+        },
+        {
+          size: 30,
+          data: [
+            { name: "appInit", freq: 10 },
+            { name: "appInit", freq: 10 },
+          ],
+        },
+        {
+          size: 5,
+          data: [
+            { name: "appInit", freq: 10 },
+            { name: "appInit", freq: 10 },
+          ],
+        },
+        {
+          size: 1,
+          data: [
+            { name: "appInit", freq: 10 },
+            { name: "appInit", freq: 10 },
+          ],
+        },
+        {
+          size: 10,
+          data: [
+            { name: "appInit", freq: 10 },
+            { name: "appInit", freq: 10 },
+          ],
+        },
       ],
     };
     return (
@@ -70,17 +69,17 @@ class List extends Component {
           paddingRight: 3,
         }}
       >
-        <Pattern data={data} kind={0} />
-        <Pattern data={data} kind={1} />
-        <Pattern data={data} kind={0} />
-        <Pattern data={data} kind={1} />
-        <Pattern data={data} kind={0} />
-        <Pattern data={data} kind={1} />
-        <Pattern data={data} kind={0} />
-        <Pattern data={data} kind={1} />
-        <Pattern data={data} kind={0} />
-        <Pattern data={data} kind={1} />
-        <Pattern data={data} kind={0} />
+        <ListItem data={data} kind={0} />
+        <ListItem data={data} kind={1} />
+        <ListItem data={data} kind={0} />
+        <ListItem data={data} kind={1} />
+        <ListItem data={data} kind={0} />
+        <ListItem data={data} kind={1} />
+        <ListItem data={data} kind={0} />
+        <ListItem data={data} kind={1} />
+        <ListItem data={data} kind={0} />
+        <ListItem data={data} kind={1} />
+        <ListItem data={data} kind={0} />
       </div>
     );
   }

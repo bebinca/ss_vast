@@ -1,16 +1,9 @@
 import React, { Component } from "react";
 class Triangle extends Component {
-  //   componentDidMount() {
-  //     store.registerComponent("Triangle", this);
-  //   }
-  //   componentWillUnmount() {
-  //     store.unregisterComponent("Triangle", this);
-  //   }
   calHeight(size) {
     return size;
   }
   render() {
-    const { classes } = this.props;
     let height = this.calHeight(this.props.size);
     let smallHeight = height - 4;
     let leftPos = -height + this.props.pos * 50;
