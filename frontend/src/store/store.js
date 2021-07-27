@@ -1,6 +1,12 @@
 import { Component } from "react";
 import { instanceOf } from "prop-types";
 
+function fetchJsonData(filePath) {
+  return fetch(filePath)
+    .then((res) => res.json())
+    .catch((e) => console.error(e));
+}
+
 class Store {
   //region Data
   count = 0;
@@ -13,6 +19,7 @@ class Store {
     appInit: "rgb(232,141,94)",
     bindFromPrompt: "rgb(204,181,147)",
   };
+  patternData = [];
   //endregion
 
   //region GetData
@@ -23,6 +30,9 @@ class Store {
     Color: (name) => {
       if (this.eventColor[name]) return this.eventColor[name];
       else return "rgb(204,204,204)";
+    },
+    PatternData: () => {
+      return this.patternData;
     },
   };
   //endregion
@@ -36,6 +46,11 @@ class Store {
     Sub: () => {
       this.count--;
       this.refreshComponent("App");
+    },
+    PatternDataInit: () => {
+      fetchJsonData("pattern_data.json").then((json) => {
+        this.patternData = json;
+      });
     },
   };
   //endregion

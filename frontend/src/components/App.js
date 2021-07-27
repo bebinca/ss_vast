@@ -66,6 +66,7 @@ class App extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(store.getData.PatternData());
     return (
       <div className={classes.root}>
         {/* <div className={classes.count}>{store.getData.Count()}</div>

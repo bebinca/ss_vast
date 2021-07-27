@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import SubjectIcon from "@material-ui/icons/Subject";
 import AppsIcon from "@material-ui/icons/Apps";
 import SelectAllIcon from "@material-ui/icons/SelectAll";
-import Rectangle from "../summary/rectangle";
 const GridOn = <AppsIcon />;
 const SelectAll = <SelectAllIcon />;
 const Subject = <SubjectIcon />;

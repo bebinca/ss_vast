@@ -2,7 +2,7 @@
 // TODO: modify calHeight function
 // TODO: position
 import React, { Component } from "react";
-import store from "../store/store";
+import store from "../../store/store";
 class Rectangle extends Component {
   calHeight(size) {
     if (size <= 5) return 0;
@@ -17,8 +17,8 @@ class Rectangle extends Component {
     return (
       <div
         style={{
-          display: "inline-block",
-          paddingRight: 4,
+          paddingTop: 4,
+          paddingLeft: 4,
           verticalAlign: "top",
         }}
       >
@@ -35,6 +35,7 @@ class Rectangle extends Component {
             backgroundColor: "#fff",
             userSelect: "none",
             lineHeight: "110%",
+            fontSize: "medium",
           }}
         >
           <div>{name}</div>

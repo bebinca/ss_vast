@@ -3,10 +3,9 @@ import Pattern from "./pattern";
 class ListItem extends Component {
   render() {
     const { data } = this.props;
-    console.log(data);
     const backgroundColor = this.props.kind ? "#efefef" : "#fff";
     return (
-      <div style={{ width: "100%" }}>
+      <div style={{ width: "100%", height: "100%" }}>
         <div
           style={{
             position: "relative",

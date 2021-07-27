@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import store from "../store/store";
 import Rectangle from "./rectangle";
 import Triangle from "./triangle";
 class Pattern extends Component {
   render() {
     const { data } = this.props;
-    console.log(data);
     const rectangle = data.events.map((event, index) => (
       <Rectangle name={event.name} size={event.freq} pos={index} />
     ));
@@ -17,13 +17,17 @@ class Pattern extends Component {
           display: "inline-block",
           position: "relative",
           margin: 0,
+          height: "100%",
+          lineHeight: 0,
+          //fontSize: 0,
         }}
       >
         <div
           style={{
             position: "relative",
-            display: "table",
             whiteSpace: "nowrap",
+            display: "table",
+            height: "100%",
           }}
         >
           {triangle}
@@ -33,6 +37,7 @@ class Pattern extends Component {
             position: "relative",
             display: "table",
             whiteSpace: "nowrap",
+            height: "100%",
           }}
         >
           {rectangle}
