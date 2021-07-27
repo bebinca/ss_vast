@@ -4,6 +4,7 @@ import heapq
 import config
 from datasketch import WeightedMinHashGenerator
 import time
+import json
 # constants
 alpha = 1
 lambda_ = 10
@@ -416,3 +417,24 @@ for item in res:
     print("--------------------")
 print(len(res))
 print(end - s)
+
+data = []
+for item in res:
+    pattern = {'events': [], 'seqs': deepcopy(item.seqs), 'insert': []}
+    events = item.events
+    insert = item.insert
+    for e in events:
+        ee = {'name': e.name, 'freq': e.freq}
+        pattern['events'].append(ee)
+    for i in insert:
+        ii = {'size': 0, 'data': []}
+        for e in i:
+            ee = {'name': e.name, 'freq': e.freq}
+            ii['data'].append(ee)
+            ii['size'] = ii['size'] + 1
+        pattern['insert'].append(ii)
+    data.append(pattern)
+jsondata = json.dumps(data)
+f = open('pattern_data.json', 'w')
+f.write(jsondata)
+f.close()
