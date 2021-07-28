@@ -5,7 +5,7 @@ import React, { Component } from "react";
 import store from "../../store/store";
 class Rectangle extends Component {
   calHeight(size) {
-    if (size <= 5) return 0;
+    if (size <= 3) return 0;
     else return size + 14;
   }
   render() {
@@ -35,7 +35,7 @@ class Rectangle extends Component {
             backgroundColor: "#fff",
             userSelect: "none",
             lineHeight: "110%",
-            fontSize: "medium",
+            fontSize: "13px",
           }}
         >
           <div>{name}</div>

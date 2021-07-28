@@ -45,6 +45,7 @@ class Triangle extends Component {
             position: "absolute",
             overflow: "hidden",
             left: leftPos,
+            zIndex: 10,
           }}
           onDoubleClick={this.handleOpen}
         >

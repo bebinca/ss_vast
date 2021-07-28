@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import store from "../store/store";
 import Rectangle from "./rectangle";
 import Triangle from "./triangle";
 class Pattern extends Component {
@@ -19,7 +18,6 @@ class Pattern extends Component {
           margin: 0,
           height: "100%",
           lineHeight: 0,
-          //fontSize: 0,
         }}
       >
         <div

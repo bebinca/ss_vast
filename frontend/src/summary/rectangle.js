@@ -35,6 +35,8 @@ class Rectangle extends Component {
             backgroundColor: "#fff",
             userSelect: "none",
             lineHeight: "110%",
+            fontSize: "13px",
+            zIndex: 10,
           }}
         >
           <div>{name}</div>

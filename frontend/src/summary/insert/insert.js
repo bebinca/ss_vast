@@ -1,4 +1,3 @@
-import { AutoComplete } from "material-ui";
 import React, { Component } from "react";
 import Rectangle from "./rectangle";
 class Insert extends Component {

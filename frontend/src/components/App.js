@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { withStyles, Button } from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import clsx from "clsx";
 import store from "../store/store";
 import Detail from "./Detail";
@@ -12,7 +12,6 @@ const styles = {
     width: "100%",
     backgroundColor: "#ededed",
     position: "relative",
-    width: "100vw",
     height: "100vh",
   },
   count: {
@@ -35,22 +34,22 @@ const styles = {
   filter: {
     position: "absolute",
     top: 40,
-    bottom: 40,
     left: 8,
     width: 450,
+    minHeight: 500,
   },
   summary: {
     position: "relative",
     top: 40,
-    bottom: 40,
+    //bottom: 40,
     left: 468,
-    width: 650,
+    width: 600,
   },
   detail: {
     position: "absolute",
     top: 40,
-    bottom: 40,
-    left: 1128,
+    //bottom: 40,
+    left: 1078,
     right: 8,
   },
 };

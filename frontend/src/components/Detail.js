@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import store from "../store/store";
 import Title from "./title";
-import Circle from "../detail/circle";
+import Table from "../detail/table";
+import "./table.css";
 class Detail extends Component {
   componentDidMount() {
     store.registerComponent("Detail", this);
@@ -14,10 +15,7 @@ class Detail extends Component {
     return (
       <div>
         <Title name="Data" />
-        <Circle name="appInit" />
-        <Circle name="appInit" />
-        <Circle name="appInit" />
-        <Circle name="appInit" />
+        <Table />
       </div>
     );
   }
