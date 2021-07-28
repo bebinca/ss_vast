@@ -18,6 +18,7 @@ class Pattern extends Component {
           margin: 0,
           height: "100%",
           lineHeight: 0,
+          //left: -76,
         }}
       >
         <div
