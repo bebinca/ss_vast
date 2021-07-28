@@ -419,8 +419,9 @@ print(len(res))
 print(end - s)
 
 data = []
+x = 0
 for item in res:
-    pattern = {'events': [], 'seqs': deepcopy(item.seqs), 'insert': []}
+    pattern = {'id': x, 'events': [], 'seqs': deepcopy(item.seqs), 'insert': []}
     events = item.events
     insert = item.insert
     for e in events:
@@ -434,7 +435,91 @@ for item in res:
             ii['size'] = ii['size'] + 1
         pattern['insert'].append(ii)
     data.append(pattern)
+    x = x + 1
 jsondata = json.dumps(data)
 f = open('pattern_data.json', 'w')
+f.write(jsondata)
+f.close()
+
+
+sequences = []
+last_id = -1
+temp_sequence = None
+max_len = 0
+for i in result:
+    if int(i[0]) > int(last_id):  # new sequence begin
+        if temp_sequence is not None and len(temp_sequence['events']) > max_len:
+            max_len = len(temp_sequence['events'])
+        last_id = int(i[0])
+        if temp_sequence is not None:
+            sequences.append(temp_sequence)  # add last sequence
+        temp_sequence = {'id': int(i[0]), 'events': [], 'belong': -1}
+    elif int(i[0]) < int(last_id):
+        temp = sequences[int(i[0])]
+        if len(temp['events']) == 0 or temp['events'][len(temp['events']) - 1]['name'] != i[1]:
+            newEvent = {'name': i[1], 'time': i[2], 'attr': i[3]}
+            sequences[int(i[0])]['events'].append(newEvent)
+    if len(temp_sequence['events']) == 0 or temp_sequence['events'][len(temp_sequence['events']) - 1]['name'] != i[1]:
+        newEvent = {'name': i[1], 'time': i[2], 'attr': i[3], 'pos': -1}
+        temp_sequence['events'].append(newEvent)
+if len(temp_sequence['events']) > max_len:
+    max_len = len(temp_sequence['events'])
+sequences.append(temp_sequence)
+
+
+def edit_insert1(sequence, pattern):  # update newEvent = {'pos': -1}
+    events = pattern.events
+    s = sequence['events']
+    len1 = len(s)
+    len2 = len(events)
+    max_len = 0
+    dp = [[0 for col in range(len2)] for row in range(len1)]
+    for i in range(len1):
+        for j in range(len2):
+            if s[i]['name'] == events[j].name:
+                if i == 0 or j == 0:
+                    dp[i][j] = 1
+                else:
+                    dp[i][j] = dp[i - 1][j - 1] + 1
+            else:
+                if i == 0 or j == 0:
+                    dp[i][j] = 0
+                else:
+                    dp[i][j] = max(dp[i - 1][j], dp[i][j - 1])
+            if dp[i][j] > max_len:
+                max_len = dp[i][j]
+    edits = len1 + len2 - 2 * max_len
+    i = len1 - 1
+    j = len2 - 1
+    while True:
+        if s[i]['name'] == events[j].name:
+            # pattern.events[j].freq = pattern.events[j].freq + 1
+            s[i]['pos'] = j
+            if i == 0 or j == 0:
+                break
+            i = i - 1
+            j = j - 1
+        else:
+            if i == 0 or j == 0:
+                break
+            if dp[i - 1][j] > dp[i][j - 1]:
+                # s[i] is need to be inserted at events pos j + 1
+                # pattern.insert_action(s[i], j + 1)
+                i = i - 1
+            else:
+                j = j - 1
+    if i > 0:
+        while i >= 0:
+            # pattern.insert_action(s[i], 0)
+            i = i - 1
+
+x = 0
+for p in res:
+    for id in p.seqs:
+        sequences[id]['belong'] = x
+        edit_insert1(sequences[id], p)
+    x = x + 1
+jsondata = json.dumps(sequences)
+f = open('sequence_data.json', 'w')
 f.write(jsondata)
 f.close()
