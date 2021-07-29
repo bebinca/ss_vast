@@ -78,6 +78,19 @@ class Store {
     SequenceData: (data) => {
       this.sequenceData = data;
     },
+    MouseOver: (name, pattern) => {
+      this.getComponent("List").mouseover(name, pattern);
+    },
+    MouseOut: () => {
+      this.getComponent("List").mouseout();
+    },
+    Dbclick: (name, pos) => {
+      this.select = -1;
+      this.getComponent("Group").update(-1);
+      this.getComponent("List").filter(name, pos);
+      this.getComponent("List").mouseout();
+      this.refreshComponent("List");
+    },
   };
   //endregion
 
