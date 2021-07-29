@@ -37,19 +37,35 @@ class List extends Component {
     this.setState({
       filter: false,
     });
+    store.handleChange.Unfilter();
   }
-  filter = (name, pos) => {
+  filter = (name, pos, pattern) => {
     let temp = [];
     let leftTemp = [];
+    let allPos = [];
+    let alignid = [];
+    let flag = 0;
     for (let i = 0; i < this.state.data.length; i++) {
+      if (i === pattern) {
+        temp.push(this.state.data[i]);
+        leftTemp.push(0);
+        allPos.push(pos);
+        alignid.push(allPos.length - 1);
+        continue;
+      }
       for (let j = 0; j < this.state.data[i].events.length; j++) {
         let e = this.state.data[i].events[j];
         if (e.name === name) {
           temp.push(this.state.data[i]);
           leftTemp.push(54 * (pos - j));
+          allPos.push(j);
+          alignid.push(allPos.length - 1);
+          flag = 1;
           break;
         }
       }
+      if (!flag) alignid.push(-1);
+      else flag = 0;
     }
     this.setState({
       filterData: temp,
@@ -58,6 +74,7 @@ class List extends Component {
       left: leftTemp,
       pos: pos,
     });
+    store.handleChange.Dbclickdetail(allPos, temp, alignid);
   };
   componentDidMount() {
     store.registerComponent("List", this);
@@ -77,7 +94,6 @@ class List extends Component {
     let color = "rgb(215,228,234)";
     let data = this.state.filter ? this.state.filterData : this.state.data;
     let thisleft = 19 + 54 * this.state.pos;
-    console.log(thisleft);
     const listitem = data.map((item, index) => {
       let overname = null;
       let cancel = false;
@@ -118,8 +134,8 @@ class List extends Component {
       <div
         style={{
           overflow: "hidden",
-          paddingLeft: 3,
-          paddingRight: 3,
+          paddingLeft: 2,
+          paddingRight: 2,
         }}
       >
         <div

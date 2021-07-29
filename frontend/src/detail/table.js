@@ -19,8 +19,24 @@ class Table extends Component {
           insert: [{ size: 0, data: [] }],
         },
       ],
+      align: false,
+      aligndata: [],
+      alignpos: [],
+      alignid: [],
     };
+    this.align = this.align.bind(this);
   }
+  align = (pos, patterndata, alignid) => {
+    this.setState({
+      align: true,
+      alignpos: pos,
+      aligndata: patterndata,
+      alignid: alignid,
+    });
+  };
+  unalign = () => {
+    this.setState({ align: false });
+  };
   componentDidMount() {
     store.registerComponent("Table", this);
     fetchJsonData("sequence_data.json").then((json) => {
@@ -35,30 +51,42 @@ class Table extends Component {
   }
   render() {
     let data = [];
-    for (let j = 0; j < this.state.pattern.length; j++) {
-      let seqs = this.state.pattern[j].seqs;
+    let patt = this.state.align ? this.state.aligndata : this.state.pattern;
+    for (let j = 0; j < patt.length; j++) {
+      let seqs = patt[j].seqs;
       for (let i = 0; i < seqs.length; i++) {
         if (this.state.data[seqs[i]]) data.push(this.state.data[seqs[i]]);
       }
     }
     return (
       <div
-        id="table"
         style={{
-          overflow: "auto",
-          paddingLeft: 3,
-          paddingRight: 3,
-          minHeight: 500,
-          maxHeight: 700,
+          overflow: "hidden",
+          paddingLeft: 2,
+          paddingRight: 2,
         }}
       >
-        <table>
-          <tr>
-            <th style={{ width: 20 }}>ID</th>
-            <th></th>
-          </tr>
-          <Group data={data} />
-        </table>
+        <div
+          id="table"
+          style={{
+            overflow: "auto",
+            minHeight: 500,
+            maxHeight: 700,
+          }}
+        >
+          <table>
+            <tr>
+              <th style={{ width: 20 }}>ID</th>
+              <th></th>
+            </tr>
+            <Group
+              data={data}
+              align={this.state.align}
+              alignpos={this.state.alignpos}
+              alignid={this.state.alignid}
+            />
+          </table>
+        </div>
       </div>
     );
   }

@@ -13,8 +13,10 @@ class Events extends Component {
     return (
       <div
         style={{
+          position: "relative",
           lineHeight: 0,
           whiteSpace: "nowrap",
+          left: this.props.left,
         }}
       >
         {circle}

@@ -29,8 +29,11 @@ class Rectangle extends Component {
     store.handleChange.MouseOut();
   }
   dbclick() {
-    console.log(this.props.name, this.props.pos);
-    store.handleChange.Dbclick(this.props.name, this.props.pos);
+    store.handleChange.Dbclick(
+      this.props.name,
+      this.props.pos,
+      this.props.pattern
+    );
   }
   render() {
     let name = this.props.name;

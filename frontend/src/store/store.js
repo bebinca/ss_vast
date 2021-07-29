@@ -84,12 +84,23 @@ class Store {
     MouseOut: () => {
       this.getComponent("List").mouseout();
     },
-    Dbclick: (name, pos) => {
+    Dbclick: (name, pos, pattern) => {
       this.select = -1;
-      this.getComponent("Group").update(-1);
-      this.getComponent("List").filter(name, pos);
+      this.getComponent("List").filter(name, pos, pattern);
       this.getComponent("List").mouseout();
+      // this.getComponent("Group").scrolltop();
+      // this.refreshComponent("Group");
       this.refreshComponent("List");
+    },
+    Dbclickdetail: (pos, patterndata, alignid) => {
+      this.getComponent("Table").align(pos, patterndata, alignid);
+      this.refreshComponent("Table");
+      this.getComponent("Group").scrolltop();
+      this.refreshComponent("Group");
+    },
+    Unfilter: () => {
+      this.getComponent("Table").unalign();
+      this.refreshComponent("Table");
     },
   };
   //endregion
