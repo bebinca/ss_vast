@@ -15,3 +15,29 @@ td {
   font-size: 12px;
   font-family: "sans-serif";
 }
+
+.frame {
+  fill: none;
+  stroke: #000;
+}
+
+.axis text {
+  font: 13px sans-serif;
+}
+
+.axis circle {
+  fill: none;
+  stroke: black;
+  /*stroke-dasharray: 4;*/
+}
+
+.axis:last-of-type circle {
+  stroke: black;
+  stroke-dasharray: none;
+}
+
+.line {
+  fill: none;
+  stroke: orange;
+  stroke-width: 3px;
+}
