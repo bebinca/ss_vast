@@ -26,7 +26,7 @@ class Group extends Component {
   }
   scrolltop() {
     this.setState({ select: -1 });
-    document.getElementById("table").scrollTo({ top: 0, behavior: "smooth" });
+    document.getElementById("table").scrollTo({ top: 0, behavior: "auto" });
   }
   componentDidMount() {
     store.registerComponent("Group", this);
@@ -39,32 +39,29 @@ class Group extends Component {
     // console.log(this.props.alignid);
     // console.log(this.props.alignpos);
     const tableitem = this.props.data.map((item, index) => {
-      let left = 0;
+      let left = -1;
+      let insert = 0;
       if (item) {
         if (this.props.align) {
           let temp =
             this.props.alignid[item.belong] >= 0
               ? this.props.alignpos[this.props.alignid[item.belong]]
               : -1;
-          for (let i = 0; i < item.events.length; i++) {
+          let i = 0;
+          for (i = 0; i < item.events.length; i++) {
             if (item.events[i].pos === temp) {
-              left = (10 - i) * 15;
-              // console.log(
-              //   "item belong",
-              //   item.belong,
-              //   "id",
-              //   item.id,
-              //   "temp",
-              //   temp,
-              //   "left",
-              //   i
-              // );
+              left = i;
               break;
             }
             if (item.events[i].pos > temp) {
-              left = (10 - i) * 15;
+              left = i;
+              insert = 1;
               break;
             }
+          }
+          if (i === item.events.length) {
+            left = i;
+            insert = 1;
           }
         }
         return (
@@ -78,7 +75,7 @@ class Group extends Component {
             <td style={{ paddingRight: 15 }}>{item.id}</td>
             <td style={{ padding: 2, overflow: "hidden", minWidth: 590 }}>
               {/* click=0 no align click=1 align pos click =2 align name*/}
-              <Events data={item.events} left={left} />
+              <Events data={item.events} left={left} insert={insert} />
             </td>
           </tr>
         );

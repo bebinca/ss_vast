@@ -144,7 +144,7 @@ class List extends Component {
             paddingTop: 20,
             overflow: "auto",
             minHeight: 500,
-            maxHeight: 700,
+            maxHeight: 680,
             position: "relative",
           }}
         >

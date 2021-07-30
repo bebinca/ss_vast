@@ -19,6 +19,7 @@ class Store {
     treeStats: "rgb(229,189,53)",
     appInit: "rgb(232,141,94)",
     bindFromPrompt: "rgb(204,181,147)",
+    none: "transparent",
   };
   patternData = [
     {
