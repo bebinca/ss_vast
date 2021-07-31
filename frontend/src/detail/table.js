@@ -39,10 +39,10 @@ class Table extends Component {
   };
   componentDidMount() {
     store.registerComponent("Table", this);
-    fetchJsonData("sequence_data1.json").then((json) => {
+    fetchJsonData("sequence_data5.json").then((json) => {
       this.setState({ data: json });
     });
-    fetchJsonData("pattern_data1.json").then((json) => {
+    fetchJsonData("pattern_data5.json").then((json) => {
       this.setState({ pattern: json });
     });
   }

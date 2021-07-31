@@ -103,6 +103,9 @@ class Store {
       this.getComponent("Table").unalign();
       this.refreshComponent("Table");
     },
+    Changefocus: (focus) => {
+      this.getComponent("Filter").setState({ focus: focus, data: [[0, 1]] });
+    },
   };
   //endregion
 

@@ -17,8 +17,8 @@ class Rectangle extends Component {
     this.setState({ mouseover: this.props.over ? true : false });
   }
   calHeight(size) {
-    if (size <= 40) return 0;
-    else return size / 3;
+    if (size <= 30) return 0;
+    else return size / 6 + 5;
   }
   mouseover() {
     this.setState({ mouseover: true });

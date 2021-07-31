@@ -5,8 +5,8 @@ import React, { Component } from "react";
 import store from "../../store/store";
 class Rectangle extends Component {
   calHeight(size) {
-    if (size <= 3) return 0;
-    else return size + 14;
+    if (size <= 30) return 0;
+    else return size / 6 + 5;
   }
   render() {
     let name = this.props.name;

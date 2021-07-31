@@ -78,7 +78,7 @@ class List extends Component {
   };
   componentDidMount() {
     store.registerComponent("List", this);
-    fetchJsonData("pattern_data1.json").then((json) => {
+    fetchJsonData("pattern_data5.json").then((json) => {
       this.setState({ data: json, filterData: json });
       store.handleChange.PatternData(json);
     });
