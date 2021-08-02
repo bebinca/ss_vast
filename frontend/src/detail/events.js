@@ -28,20 +28,6 @@ class Events extends Component {
         }
       }
     });
-    // if (this.props.insert === 1 && index === this.props.left) {
-    //   return (
-    //     <div
-    //       style={{
-    //         position: "relative",
-    //         lineHeight: 0,
-    //         whiteSpace: "nowrap",
-    //         left: (10 - this.props.left) * 15,
-    //       }}
-    //     >
-    //       {circle}
-    //     </div>
-    //   );
-    // } else
     return (
       <div
         style={{
@@ -49,6 +35,7 @@ class Events extends Component {
           lineHeight: 0,
           whiteSpace: "nowrap",
           left: this.props.left === -1 ? 0 : (10 - this.props.left) * 15,
+          transition: "all 1s ease 0s",
         }}
       >
         {circle}

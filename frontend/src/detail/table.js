@@ -12,6 +12,13 @@ class Table extends Component {
           events: [],
         },
       ],
+      oripattern: [
+        {
+          events: [{ name: "haha", freq: 0 }],
+          seqs: [0],
+          insert: [{ size: 0, data: [] }],
+        },
+      ],
       pattern: [
         {
           events: [{ name: "haha", freq: 0 }],
@@ -23,8 +30,12 @@ class Table extends Component {
       aligndata: [],
       alignpos: [],
       alignid: [],
+      filter: false,
+      filterdata: [],
     };
     this.align = this.align.bind(this);
+    this.filter = this.filter.bind(this);
+    this.unfilter = this.unfilter.bind(this);
   }
   align = (pos, patterndata, alignid) => {
     this.setState({
@@ -37,13 +48,19 @@ class Table extends Component {
   unalign = () => {
     this.setState({ align: false });
   };
+  filter = (patterndata) => {
+    this.setState({ filter: true, pattern: patterndata });
+  };
+  unfilter = () => {
+    this.setState({ filter: false, pattern: this.state.oripattern });
+  };
   componentDidMount() {
     store.registerComponent("Table", this);
     fetchJsonData("sequence_data5.json").then((json) => {
       this.setState({ data: json });
     });
-    fetchJsonData("pattern_data5.json").then((json) => {
-      this.setState({ pattern: json });
+    fetchJsonData("pattern_data_sort.json").then((json) => {
+      this.setState({ oripattern: json, pattern: json });
     });
   }
   componentWillUnmount() {
@@ -74,7 +91,7 @@ class Table extends Component {
             maxHeight: 700,
           }}
         >
-          <table>
+          <table style={{ transition: "all 1s" }}>
             <tr>
               <th style={{ width: 20 }}>ID</th>
               <th></th>

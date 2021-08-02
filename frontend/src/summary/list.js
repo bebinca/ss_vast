@@ -8,6 +8,7 @@ class List extends Component {
     this.state = {
       data: [
         {
+          id: 0,
           events: [{ name: "haha", freq: 0 }],
           seqs: [],
           insert: [{ size: 0, data: [] }],
@@ -20,11 +21,14 @@ class List extends Component {
       overpattern: null,
       left: [],
       pos: -1,
+      filter1: false,
+      filterData1: [],
     };
     this.handlePatternClick = this.handlePatternClick.bind(this);
     this.mouseover = this.mouseover.bind(this);
     this.mouseout = this.mouseout.bind(this);
     this.filter = this.filter.bind(this);
+    this.filter1 = this.filter1.bind(this);
     this.unfilter = this.unfilter.bind(this);
   }
   mouseover = (name, pattern) => {
@@ -39,34 +43,60 @@ class List extends Component {
     });
     store.handleChange.Unfilter();
   }
+  filter1 = (select) => {
+    let filterdata1 = [];
+    for (let i = 0; i < this.state.data.length; i++) {
+      // for every pattern
+      let flag = 0;
+      for (let j = 0; j < this.state.data[i].events.length; j++) {
+        // for every event
+        for (let x = 0; x < select.length; x++) {
+          if (this.state.data[i].events[j]["name"] === select[x]) {
+            filterdata1.push(this.state.data[i]);
+            flag = 1;
+            break;
+          }
+        }
+        if (flag === 1) break;
+      }
+    }
+    this.setState({ filter1: true, filterData1: filterdata1 });
+    store.getComponent("Table").filter(filterdata1);
+  };
   filter = (name, pos, pattern) => {
     let temp = [];
     let leftTemp = [];
     let allPos = [];
-    let alignid = [];
+    let alignid = new Array(41);
     let flag = 0;
-    for (let i = 0; i < this.state.data.length; i++) {
-      if (i === pattern) {
-        temp.push(this.state.data[i]);
+    let statedata = this.state.filter1
+      ? this.state.filterData1
+      : this.state.data;
+    console.log(name, pos, pattern);
+    for (let i = 0; i < statedata.length; i++) {
+      if (statedata[i]["id"] === pattern) {
+        temp.push(statedata[i]);
         leftTemp.push(0);
         allPos.push(pos);
-        alignid.push(allPos.length - 1);
+        alignid[pattern] = allPos.length - 1;
         continue;
       }
-      for (let j = 0; j < this.state.data[i].events.length; j++) {
-        let e = this.state.data[i].events[j];
+      for (let j = 0; j < statedata[i].events.length; j++) {
+        let e = statedata[i].events[j];
         if (e.name === name) {
-          temp.push(this.state.data[i]);
+          temp.push(statedata[i]);
           leftTemp.push(54 * (pos - j));
           allPos.push(j);
-          alignid.push(allPos.length - 1);
+          alignid[statedata[i]["id"]] = allPos.length - 1;
+          console.log(pattern, allPos.length - 1);
           flag = 1;
           break;
         }
       }
-      if (!flag) alignid.push(-1);
+      if (!flag) alignid[statedata[i]["id"]] = -1;
       else flag = 0;
     }
+    console.log(temp);
     this.setState({
       filterData: temp,
       filter: true,
@@ -78,7 +108,7 @@ class List extends Component {
   };
   componentDidMount() {
     store.registerComponent("List", this);
-    fetchJsonData("pattern_data5.json").then((json) => {
+    fetchJsonData("pattern_data_sort.json").then((json) => {
       this.setState({ data: json, filterData: json });
       store.handleChange.PatternData(json);
     });
@@ -92,7 +122,11 @@ class List extends Component {
   };
   render() {
     let color = "rgb(215,228,234)";
-    let data = this.state.filter ? this.state.filterData : this.state.data;
+    let data = this.state.filter
+      ? this.state.filterData
+      : this.state.filter1
+      ? this.state.filterData1
+      : this.state.data;
     let thisleft = 19 + 54 * this.state.pos;
     const listitem = data.map((item, index) => {
       let overname = null;

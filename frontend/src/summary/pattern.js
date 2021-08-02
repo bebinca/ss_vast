@@ -40,6 +40,7 @@ class Pattern extends Component {
           height: "100%",
           lineHeight: 0,
           left: this.props.left, ///////////////
+          transition: "all 1s ease 0s",
         }}
       >
         <div

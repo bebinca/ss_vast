@@ -34,6 +34,7 @@ class Store {
       events: [],
     },
   ];
+  filterData = [];
   //endregion
 
   //region GetData
@@ -105,6 +106,13 @@ class Store {
     },
     Changefocus: (focus) => {
       this.getComponent("Filter").setState({ focus: focus, data: [[0, 1]] });
+    },
+    FilterDataAppend: (data) => {
+      this.filterData.append(data);
+    },
+    Filter: (select) => {
+      console.log(select);
+      this.getComponent("List").filter1(select);
     },
   };
   //endregion

@@ -9,14 +9,14 @@ class Circle extends Component {
       <div
         style={{
           display: "inline-block",
-          padding: 2,
+          padding: 1,
           verticalAlign: "middle",
         }}
       >
         <div
           style={{
-            height: 9,
-            width: 9,
+            height: 11,
+            width: 11,
             position: "relative",
             borderRadius: "50%",
             backgroundColor: color,

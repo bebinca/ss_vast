@@ -36,7 +36,7 @@ const styles = {
     top: 40,
     left: 8,
     width: 450,
-    height: 478,
+    height: 500,
   },
   summary: {
     position: "relative",
