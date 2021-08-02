@@ -7,11 +7,11 @@ import time
 import json
 # constants
 alpha = 1
-lambda_ = 20
+lambda_ = 30
 th = 0.9
 decrease_step = 0.05
 wmg = WeightedMinHashGenerator(34)
-rrange = 100
+rrange = 1000
 
 # read the file
 result = None
@@ -442,7 +442,7 @@ for item in res:
     data.append(pattern)
     x = x + 1
 jsondata = json.dumps(data)
-f = open('pattern_data.json', 'w')
+f = open('pattern_data1.json', 'w')
 f.write(jsondata)
 f.close()
 
@@ -525,6 +525,6 @@ for p in res:
         edit_insert1(sequences[id], p)
     x = x + 1
 jsondata = json.dumps(sequences)
-f = open('sequence_data.json', 'w')
+f = open('sequence_data1.json', 'w')
 f.write(jsondata)
 f.close()

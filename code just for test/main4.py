@@ -6,12 +6,12 @@ from datasketch import WeightedMinHashGenerator
 import time
 import json
 # constants
-alpha = 1
-lambda_ = 20
+alpha = 0.7
+lambda_ = 100
 th = 0.9
 decrease_step = 0.05
 wmg = WeightedMinHashGenerator(34)
-rrange = 100
+#rrange = 1000
 
 # read the file
 result = None
@@ -379,8 +379,8 @@ print(len(sequences))
 print(max_len)
 Q = []
 C = []
-#for i in range(len(sequences)):
-for i in range(rrange):
+for i in range(len(sequences)):
+#for i in range(rrange):
     temp = construct(sequences[i], id=i)
     C.append(temp)
 s = time.time()
@@ -442,7 +442,7 @@ for item in res:
     data.append(pattern)
     x = x + 1
 jsondata = json.dumps(data)
-f = open('pattern_data.json', 'w')
+f = open('pattern_data6.json', 'w')
 f.write(jsondata)
 f.close()
 
@@ -525,6 +525,6 @@ for p in res:
         edit_insert1(sequences[id], p)
     x = x + 1
 jsondata = json.dumps(sequences)
-f = open('sequence_data.json', 'w')
+f = open('sequence_data6.json', 'w')
 f.write(jsondata)
 f.close()

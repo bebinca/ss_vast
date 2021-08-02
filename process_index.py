@@ -74,7 +74,15 @@ for i in range(length):
         temp[events[j]] = res[i][j]
     result[events[i]] = temp
 
-jsondata = json.dumps(result)
+data = {'res': [], 'events': events, 'dict': {}, 'eventsize': []}
+for i in range(length):
+    data['dict'][events[i]] = i
+    temp = []
+    for j in range(length):
+        temp.append([j, res[i][j]])
+    data['res'].append(temp)
+    data['eventsize'].append(len(events_sequence[events[i]]))
+jsondata = json.dumps(data)
 f = open('filter_data.json', 'w')
 f.write(jsondata)
 f.close()
